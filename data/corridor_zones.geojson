@@ -1,0 +1,104 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hudson_Highlands_Core",
+        "description": "Western edge along Hudson River — includes Storm King State Park and Hudson Highlands State Park lands. Primary raptor migration corridor and bald eagle wintering habitat.",
+        "priority": "High",
+        "area_acres": 4200
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.9550, 41.3520],
+          [-73.9700, 41.3600],
+          [-73.9750, 41.3800],
+          [-73.9800, 41.4000],
+          [-73.9820, 41.4200],
+          [-73.9780, 41.4400],
+          [-73.9700, 41.4550],
+          [-73.9600, 41.4600],
+          [-73.9450, 41.4550],
+          [-73.9350, 41.4400],
+          [-73.9300, 41.4200],
+          [-73.9320, 41.4000],
+          [-73.9380, 41.3800],
+          [-73.9400, 41.3600],
+          [-73.9420, 41.3520],
+          [-73.9550, 41.3520]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Canopus_Creek_Corridor",
+        "description": "Follows Canopus Creek northeast through Philipstown — critical freshwater corridor for American eel migration, wood turtle nesting, and spotted salamander breeding pools.",
+        "priority": "High",
+        "area_acres": 1850
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.9100, 41.3800],
+          [-73.9200, 41.3750],
+          [-73.9300, 41.3700],
+          [-73.9200, 41.3900],
+          [-73.9100, 41.4050],
+          [-73.9000, 41.4200],
+          [-73.8900, 41.4350],
+          [-73.8800, 41.4500],
+          [-73.8700, 41.4550],
+          [-73.8600, 41.4500],
+          [-73.8650, 41.4350],
+          [-73.8750, 41.4200],
+          [-73.8850, 41.4050],
+          [-73.8950, 41.3900],
+          [-73.9000, 41.3750],
+          [-73.9000, 41.3650],
+          [-73.9050, 41.3650],
+          [-73.9100, 41.3800]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fahnestock_Buffer",
+        "description": "Eastern buffer zone surrounding Clarence Fahnestock State Park — forest connectivity zone for bobcat, cerulean warbler breeding habitat, and vernal pool complexes.",
+        "priority": "Medium",
+        "area_acres": 3100
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.8700, 41.3900],
+          [-73.8800, 41.3850],
+          [-73.8950, 41.3800],
+          [-73.9050, 41.3800],
+          [-73.9000, 41.3950],
+          [-73.8950, 41.4100],
+          [-73.8850, 41.4250],
+          [-73.8750, 41.4400],
+          [-73.8650, 41.4500],
+          [-73.8550, 41.4580],
+          [-73.8450, 41.4650],
+          [-73.8300, 41.4680],
+          [-73.8150, 41.4620],
+          [-73.8050, 41.4500],
+          [-73.8000, 41.4350],
+          [-73.8050, 41.4200],
+          [-73.8150, 41.4050],
+          [-73.8200, 41.3900],
+          [-73.8250, 41.3750],
+          [-73.8350, 41.3650],
+          [-73.8500, 41.3600],
+          [-73.8600, 41.3700],
+          [-73.8700, 41.3900]
+        ]]
+      }
+    }
+  ]
+}
