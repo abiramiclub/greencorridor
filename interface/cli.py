@@ -1,10 +1,6 @@
 import sys
-from pathlib import Path
 
 import click
-from dotenv import load_dotenv
-
-load_dotenv(Path(__file__).parent.parent / ".env")
 
 from analysis.geocoder import address_to_geom
 from analysis.cvi_scorer import score_parcel

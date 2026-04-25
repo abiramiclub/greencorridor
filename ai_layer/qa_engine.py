@@ -1,10 +1,6 @@
 import os
-from pathlib import Path
 
 import anthropic
-from dotenv import load_dotenv
-
-load_dotenv(Path(__file__).parent.parent / ".env")
 
 SYSTEM_PROMPT = """You are an expert on the Hudson Highlands Green Corridors Initiative in Philipstown and Putnam County, NY. Answer questions accurately based on the following context:
 

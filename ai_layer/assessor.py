@@ -1,10 +1,6 @@
 import os
-from pathlib import Path
 
 import anthropic
-from dotenv import load_dotenv
-
-load_dotenv(Path(__file__).parent.parent / ".env")
 
 SYSTEM_PROMPT = (
     "You are a conservation planning assistant for Philipstown, NY, supporting the Hudson Highlands "
