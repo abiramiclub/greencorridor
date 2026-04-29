@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CorridorGuardian — Philipstown Permit Evaluator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; font-family: Calibri, 'Segoe UI', sans-serif; background: #f4f6f4; }
+    #root { max-width: 900px; margin: 32px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    h1 { margin: 0; font-size: 26px; color: #2C5F2D; }
+    h3 { font-size: 15px; margin: 0 0 12px; }
+    .header { border-bottom: 3px solid #2C5F2D; padding-bottom: 12px; margin-bottom: 24px; }
+    .header p { margin: 4px 0 0; color: #555; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { background: #f8f8f8; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+    .btn { width: 100%; padding: 13px 0; font-size: 15px; font-weight: 700; background: #2C5F2D; color: white; border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.5px; }
+    .btn:hover { background: #245024; }
+    select, input[type=number] { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
+    select { width: 100%; }
+    .parcel-radio { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer; }
+    .parcel-radio input { margin-top: 3px; }
+    .parcel-label-main { font-weight: 600; font-size: 14px; }
+    .parcel-label-sub { font-size: 12px; color: #666; }
+    .parcel-label-desc { font-size: 12px; color: #888; font-style: italic; }
+    .decision-banner { padding: 14px 18px; border-radius: 8px; border-width: 2px; border-style: solid; margin-bottom: 16px; }
+    .decision-text { font-size: 22px; font-weight: 800; }
+    .decision-meta { font-size: 13px; color: #555; margin-top: 4px; }
+    .decision-summary { font-size: 13px; margin-top: 6px; color: #333; }
+    .rule-card { margin-bottom: 12px; border-radius: 6px; border: 1px solid; overflow: hidden; }
+    .rule-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; user-select: none; }
+    .rule-body { padding: 12px 14px; background: white; border-top: 1px solid; }
+    .severity-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 12px; color: white; letter-spacing: 1px; }
+    .rule-name { font-weight: 600; }
+    .rule-reg { font-size: 12px; color: #555; margin-top: 2px; }
+    .rule-mitigation { margin: 0 0 10px; padding-left: 20px; color: #555; }
+    .rule-mitigation li { margin-bottom: 4px; }
+    .rule-approval { margin: 0; font-size: 12px; color: #777; font-style: italic; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    td { padding: 5px 8px; border-bottom: 1px solid #eee; }
+    td:first-child { font-weight: 600; color: #555; white-space: nowrap; }
+    .section-title { font-size: 14px; font-weight: 700; margin: 0 0 8px; }
+    .all-clear { padding: 16px; background: #E8F5E9; border-radius: 6px; border-left: 4px solid #2C5F2D; }
+    .placeholder { padding: 24px; background: #f0f4f0; border-radius: 8px; text-align: center; color: #666; }
+    .footer-note { font-size: 11px; color: #888; margin-top: 16px; font-style: italic; }
+    .toggle-arrow { color: #999; font-size: 12px; margin-left: auto; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const PARCELS = [
+  {
+    id: "PH-001",
+    address: "238 Main St, Cold Spring, NY",
+    owner: "Cold Spring Coffee & Bistro",
+    acres: 0.5,
+    zoning: "Commercial Downtown",
+    description: "Existing restaurant looking to expand seating area and kitchen",
+    features: {
+      in_riparian_zone: true, riparian_distance_ft: 45,
+      riparian_feature: "Foundry Brook tributary",
+      core_forest_acres: 0.3, core_forest_type: "Mixed hardwood canopy",
+      wetland_percent: 15, wetland_type: "Riparian transition zone",
+      bald_eagle_sightings_miles: 0.8, eagle_sightings_count: 3,
+      eagle_last_sighting: "2026-03-15",
+      habitat_connectivity_priority: "high",
+      green_corridor_zone: "priority_1",
+      green_corridor_name: "Foundry Brook — Hudson River Connector",
+      spotted_salamander_habitat: true, american_eel_access: true
+    }
+  },
+  {
+    id: "PH-002",
+    address: "9475 Route 9, Philipstown, NY",
+    owner: "Philipstown Hardware & Feed",
+    acres: 1.2,
+    zoning: "Mixed Commercial",
+    description: "Hardware store seeking to add lumber yard and outdoor storage",
+    features: {
+      in_riparian_zone: false, riparian_distance_ft: 250,
+      riparian_feature: "Tributary to Sprout Brook",
+      core_forest_acres: 0.1, core_forest_type: "Deciduous fringe",
+      wetland_percent: 2, wetland_type: "Minor seepage area",
+      bald_eagle_sightings_miles: 2.1, eagle_sightings_count: 0,
+      eagle_last_sighting: null,
+      habitat_connectivity_priority: "medium",
+      green_corridor_zone: "buffer",
+      green_corridor_name: "Sprout Brook Secondary Corridor",
+      spotted_salamander_habitat: false, american_eel_access: false
+    }
+  },
+  {
+    id: "PH-003",
+    address: "1520 Route 9D, Philipstown, NY",
+    owner: "Hudson Valley Marketplace Retail",
+    acres: 2.5,
+    zoning: "Highway Commercial",
+    description: "Retail plaza seeking to expand parking and add service bay",
+    features: {
+      in_riparian_zone: false, riparian_distance_ft: 800,
+      riparian_feature: "Distant to all streams",
+      core_forest_acres: 0.0, core_forest_type: "None (previously cleared)",
+      wetland_percent: 0, wetland_type: "None identified",
+      bald_eagle_sightings_miles: 3.5, eagle_sightings_count: 0,
+      eagle_last_sighting: null,
+      habitat_connectivity_priority: "low",
+      green_corridor_zone: "none",
+      green_corridor_name: "Outside priority areas",
+      spotted_salamander_habitat: false, american_eel_access: false
+    }
+  }
+];
+
+const RULES = [
+  {
+    id: "RIPARIAN_BUFFER", name: "Riparian Zone Protection", severity: "BLOCK",
+    regulation: "Green Corridors Plan § 3.2 — Stream Buffer Requirements; NYS ECL § 24-0701",
+    impact: "Expansion AS PLANNED violates guardrail. Project cannot proceed without modification.",
+    mitigation: ["Reduce expansion footprint to remain >100 ft from riparian feature","Relocate expansion to alternative area of parcel farther from stream","Implement riparian restoration plan (native plantings, erosion control)","Propose alternative design that maintains buffer integrity"],
+    approval: "Planning Director review with environmental consultant letter. HHLT consultation recommended.",
+    check: f => f.riparian_distance_ft < 100
+  },
+  {
+    id: "FOREST_CANOPY", name: "Core Forest Preservation", severity: "CONDITIONAL",
+    regulation: "Green Corridors Plan § 4.1 — Core Forest Threshold; NLCD Classification",
+    impact: "Expansion affects core forest. Project requires habitat restoration or offset mitigation.",
+    mitigation: ["Develop on-site habitat restoration plan (native plantings, invasive removal)","Fund off-site forest conservation easement or acquisition through HHLT","Reduce expansion scope to minimize forest loss (<1 acre)","Phased development with monitoring and contingency conservation"],
+    approval: "Planning Director + Conservation Board joint approval. HHLT habitat assessment required.",
+    check: f => f.core_forest_acres > 1.0
+  },
+  {
+    id: "EAGLE_HABITAT", name: "Bald Eagle Nesting & Foraging Habitat", severity: "CONSULT",
+    regulation: "NYS DEC Wildlife Resources § 5.0 — Protected Species; Bald and Golden Eagle Protection Act",
+    impact: "Expansion in bald eagle habitat zone. Project requires NYSDEC consultation and seasonal construction limits.",
+    mitigation: ["Obtain NYSDEC habitat assessment letter confirming no nesting impact","Implement seasonal construction limits (avoid nesting season: Jan–Jul)","Establish construction exclusion zones and noise limits within 1 mile","Propose compensatory habitat work (perch trees, nesting platform, shoreline restoration)"],
+    approval: "NYSDEC written habitat clearance REQUIRED. Planning Director approval after DEC clearance.",
+    check: f => f.bald_eagle_sightings_miles < 2.0
+  },
+  {
+    id: "HABITAT_CONNECTIVITY", name: "Habitat Connectivity Corridors", severity: "REVIEW",
+    regulation: "Green Corridors Plan § 6.0 — Corridor Integrity; Hudson Highlands biodiversity framework",
+    impact: "Expansion in high-priority corridor. Project may degrade wildlife connectivity. Mitigation required.",
+    mitigation: ["Maintain minimum 60% site permeability (unfenced, passable habitat)","Implement phased construction to maintain corridor function during development","Design landscaping to support native species and safe passage","Establish conservation easement on remaining 40% of site"],
+    approval: "HHLT consultation + Planning Director approval. May require Conservation Board review.",
+    check: f => f.habitat_connectivity_priority === 'high'
+  },
+  {
+    id: "WETLAND_IMPACT", name: "Wetland Protection", severity: "BLOCK",
+    regulation: "NYS Environmental Conservation Law § 24-0701 — Freshwater Wetlands Protection Act; Article 24",
+    impact: "Site contains significant wetlands. Expansion BLOCKED unless completely redesigned.",
+    mitigation: ["Redesign project footprint entirely to avoid all wetland areas (>5% threshold)","Pursue Article 24 permit from DEC (requires demonstrated public benefit and no feasible alternatives)","Abandon expansion; focus on non-wetland areas of parcel","Propose wetland restoration on adjacent land to offset any minor unavoidable loss"],
+    approval: "DEC Article 24 permit (state-level) + Planning Board supermajority vote (6/7). HHLT environmental review.",
+    check: f => f.wetland_percent > 5
+  }
+];
+
+const SEV = {
+  BLOCK:       { bg:'#FFEBEE', border:'#C41E3A', text:'#C41E3A', badge:'#C41E3A', icon:'🚫' },
+  CONDITIONAL: { bg:'#FFF3E0', border:'#E65100', text:'#E65100', badge:'#E65100', icon:'⚠️' },
+  REVIEW:      { bg:'#FFF9C4', border:'#F57C00', text:'#F57C00', badge:'#F57C00', icon:'🔍' },
+  CONSULT:     { bg:'#E3F2FD', border:'#1565C0', text:'#1565C0', badge:'#1565C0', icon:'📋' },
+};
+
+let state = { parcelId: 'PH-001', expansion: 0.2, results: null, openRules: new Set() };
+
+function evaluateParcel(parcel) {
+  const triggered = RULES.filter(r => r.check(parcel.features));
+  const blocks = triggered.filter(r => r.severity === 'BLOCK');
+  return {
+    triggered, blocks,
+    decision: blocks.length > 0 ? 'BLOCKED' : 'PASS',
+    ts: new Date().toLocaleString()
+  };
+}
+
+function render() {
+  const parcel = PARCELS.find(p => p.id === state.parcelId);
+  const f = parcel.features;
+  const r = state.results;
+
+  const featureRows = [
+    ['Corridor zone', f.green_corridor_name],
+    ['Riparian distance', `${f.riparian_distance_ft} ft from ${f.riparian_feature}`],
+    ['Wetland coverage', `${f.wetland_percent}% — ${f.wetland_type}`],
+    ['Core forest', `${f.core_forest_acres} ac (${f.core_forest_type})`],
+    ['Bald eagle sightings', `${f.bald_eagle_sightings_miles} mi — ${f.eagle_sightings_count} sighting(s)`],
+    ['Connectivity priority', f.habitat_connectivity_priority.toUpperCase()],
+    ['Salamander habitat', f.spotted_salamander_habitat ? '✓ Yes' : 'No'],
+    ['Eel stream access', f.american_eel_access ? '✓ Yes' : 'No'],
+  ];
+
+  let resultsHtml = '';
+  if (!r) {
+    resultsHtml = `<div class="placeholder"><div style="font-size:40px;margin-bottom:12px">🌿</div>
+      <p style="margin:0;font-size:14px">Select a parcel and click <strong>Evaluate</strong> to check against Philipstown's green guardrails.</p></div>`;
+  } else {
+    const dc = r.decision === 'PASS' ? '#2C5F2D' : '#C41E3A';
+    const db = r.decision === 'PASS' ? '#E8F5E9' : '#FFEBEE';
+    const blocks = r.triggered.filter(x => x.severity === 'BLOCK');
+    const others = r.triggered.filter(x => x.severity !== 'BLOCK');
+    const decisionLabel = r.decision === 'PASS' ? '✓ PASSES GUARDRAILS' : '🚫 BLOCKED';
+    const summary = r.triggered.length === 0
+      ? 'No guardrails triggered. Expansion may proceed subject to standard review.'
+      : `${blocks.length} blocking violation${blocks.length !== 1 ? 's' : ''}, ${others.length} condition${others.length !== 1 ? 's' : ''} to address.`;
+
+    const ruleHtml = rules => rules.map(rule => {
+      const c = SEV[rule.severity];
+      const isOpen = state.openRules.has(rule.id);
+      const bodyHtml = isOpen ? `
+        <div class="rule-body" style="border-top-color:${c.border}">
+          <p style="margin:0 0 8px;color:#333"><strong>Impact:</strong> ${rule.impact}</p>
+          <p style="margin:0 0 4px;font-weight:600;color:#444">Mitigation options:</p>
+          <ul class="rule-mitigation">${rule.mitigation.map(m => `<li>${m}</li>`).join('')}</ul>
+          <p class="rule-approval"><strong>Approval path:</strong> ${rule.approval}</p>
+        </div>` : '';
+      return `<div class="rule-card" style="border-color:${c.border}">
+        <div class="rule-header" style="background:${c.bg}" onclick="toggleRule('${rule.id}')">
+          <span style="font-size:18px">${c.icon}</span>
+          <div style="flex:1">
+            <div class="rule-name" style="color:${c.text}">${rule.name}</div>
+            <div class="rule-reg">${rule.regulation}</div>
+          </div>
+          <span class="severity-badge" style="background:${c.badge}">${rule.severity}</span>
+          <span class="toggle-arrow">${isOpen ? '▲' : '▼'}</span>
+        </div>${bodyHtml}</div>`;
+    }).join('');
+
+    resultsHtml = `
+      <div class="decision-banner" style="background:${db};border-color:${dc}">
+        <div class="decision-text" style="color:${dc}">${decisionLabel}</div>
+        <div class="decision-meta">${parcel.address} · ${state.expansion} ac expansion · ${r.ts}</div>
+        <div class="decision-summary">${summary}</div>
+      </div>
+      ${blocks.length > 0 ? `<p class="section-title" style="color:#C41E3A">🚫 Critical Violations — Expansion Blocked</p>${ruleHtml(blocks)}` : ''}
+      ${others.length > 0 ? `<p class="section-title" style="color:#E65100">⚠️ Conditions &amp; Consultations Required</p>${ruleHtml(others)}` : ''}
+      ${r.triggered.length === 0 ? `<div class="all-clear">
+        <p style="margin:0;font-weight:600;color:#2C5F2D">✓ All 5 guardrails evaluated — no violations detected.</p>
+        <p style="margin:8px 0 0;font-size:13px;color:#444">Proceed to standard planning board review. All decisions are logged and auditable.</p>
+      </div>` : ''}
+      <p class="footer-note">Source: Hudson Highlands Green Corridors Plan (2022), NYS Environmental Conservation Law. AI-assisted. Field verification by a qualified ecologist recommended before any land use decision.</p>`;
+  }
+
+  document.getElementById('root').innerHTML = `
+    <div class="header">
+      <h1>CorridorGuardian</h1>
+      <p>Town of Philipstown — Permit Scenario Evaluator &nbsp;|&nbsp; Hudson Highlands Green Corridors Initiative</p>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h3>Step 1 — Select Parcel</h3>
+          ${PARCELS.map(p => `
+            <label class="parcel-radio">
+              <input type="radio" name="parcel" value="${p.id}" ${p.id === state.parcelId ? 'checked' : ''} onchange="selectParcel('${p.id}')">
+              <div>
+                <div class="parcel-label-main">${p.id} — ${p.address}</div>
+                <div class="parcel-label-sub">${p.owner} · ${p.zoning} · ${p.acres} ac</div>
+                <div class="parcel-label-desc">${p.description}</div>
+              </div>
+            </label>`).join('')}
+        </div>
+        <div class="card">
+          <h3>Step 2 — Propose Expansion</h3>
+          <label style="font-size:14px">Expansion size (acres):&nbsp;
+            <input type="number" value="${state.expansion}" min="0.1" max="5" step="0.1"
+              onchange="setExpansion(this.value)"
+              style="padding:5px 8px;width:80px;border-radius:4px;border:1px solid #ccc;font-size:14px">
+          </label>
+        </div>
+        <button class="btn" onclick="evaluate()">Evaluate Against Town Guardrails →</button>
+        <div class="card" style="margin-top:20px">
+          <h3 style="font-size:14px;color:#444">Parcel Environmental Data</h3>
+          <table><tbody>${featureRows.map(([l,v]) => `<tr><td>${l}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+        </div>
+      </div>
+      <div>${resultsHtml}</div>
+    </div>`;
+}
+
+function selectParcel(id) { state.parcelId = id; state.results = null; state.openRules = new Set(); render(); }
+function setExpansion(v) { state.expansion = parseFloat(v); }
+function toggleRule(id) {
+  if (state.openRules.has(id)) state.openRules.delete(id); else state.openRules.add(id);
+  render();
+}
+function evaluate() {
+  const parcel = PARCELS.find(p => p.id === state.parcelId);
+  state.results = evaluateParcel(parcel);
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

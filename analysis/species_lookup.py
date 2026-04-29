@@ -28,9 +28,57 @@ def _is_target(name: str) -> dict | None:
     return None
 
 
-def get_species(lat: float, lon: float) -> list:
+def _inject_parcel_species(parcel: dict, detected_targets: set, results: list):
+    """Add species detections from parcels.json rich data."""
+    f = parcel.get("features", {})
+
+    if f.get("bald_eagle_sightings_miles", 9) < 2.0 and f.get("eagle_sightings_count", 0) > 0:
+        t = next(x for x in TARGET_SPECIES if x["common"] == "Bald Eagle")
+        results.append({
+            "common_name": "Bald Eagle",
+            "scientific_name": t["scientific"],
+            "observed_on": f.get("eagle_last_sighting", ""),
+            "quality_grade": "research",
+            "source": "Philipstown parcel database",
+            "priority": True,
+            "status": t["status"],
+        })
+        detected_targets.add("Bald Eagle")
+
+    if f.get("spotted_salamander_habitat"):
+        t = next(x for x in TARGET_SPECIES if x["common"] == "Spotted Salamander")
+        results.append({
+            "common_name": "Spotted Salamander",
+            "scientific_name": t["scientific"],
+            "observed_on": "",
+            "quality_grade": "habitat confirmed",
+            "source": "Philipstown parcel database",
+            "priority": True,
+            "status": t["status"],
+        })
+        detected_targets.add("Spotted Salamander")
+
+    if f.get("american_eel_access"):
+        t = next(x for x in TARGET_SPECIES if x["common"] == "American Eel")
+        results.append({
+            "common_name": "American Eel",
+            "scientific_name": t["scientific"],
+            "observed_on": "",
+            "quality_grade": "habitat confirmed",
+            "source": "Philipstown parcel database",
+            "priority": True,
+            "status": t["status"],
+        })
+        detected_targets.add("American Eel")
+
+
+def get_species(lat: float, lon: float, parcel: dict | None = None) -> list:
     results = []
     detected_targets = set()
+
+    # Inject species from parcel data first
+    if parcel:
+        _inject_parcel_species(parcel, detected_targets, results)
 
     # iNaturalist
     try:

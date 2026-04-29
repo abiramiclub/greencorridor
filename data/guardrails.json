@@ -1,0 +1,116 @@
+{
+  "rules": [
+    {
+      "id": "RIPARIAN_BUFFER",
+      "name": "Riparian Zone Protection",
+      "category": "Stream & Wetland Protection",
+      "description": "No expansion within 100 feet of streams, rivers, or riparian transition zones",
+      "trigger": "riparian_distance_ft < 100",
+      "severity": "BLOCK",
+      "regulation": "Green Corridors Plan § 3.2 — Stream Buffer Requirements; NYS Environmental Conservation Law § 24-0701",
+      "rationale": "Riparian buffers protect water quality, bank stability, and wildlife corridors. The Hudson Highlands are water-rich; stream integrity is critical.",
+      "impact_if_violated": "Expansion AS PLANNED violates guardrail. Project cannot proceed without modification.",
+      "mitigation_options": [
+        "Option A: Reduce expansion footprint to remain >100 ft from riparian feature",
+        "Option B: Relocate expansion to alternative area of parcel farther from stream",
+        "Option C: Implement riparian restoration plan (native plantings, erosion control) to offset impact",
+        "Option D: Propose alternative design that maintains buffer integrity"
+      ],
+      "approval_path": "Planning Director review with environmental consultant letter. HHLT consultation recommended.",
+      "override_required": true,
+      "override_authority": "Planning Director + Town Board approval"
+    },
+    {
+      "id": "FOREST_CANOPY",
+      "name": "Core Forest Preservation",
+      "category": "Forest & Habitat",
+      "description": "No net loss of core forest. Loss of >1 acre triggers mandatory habitat restoration or offset plan.",
+      "trigger": "core_forest_acres > 1.0",
+      "severity": "CONDITIONAL",
+      "regulation": "Green Corridors Plan § 4.1 — Core Forest Threshold; NLCD Classification",
+      "rationale": "Core forest (unfragmented canopy >250 acres) is rare in the Hudson Highlands. Every acre lost reduces interior forest habitat and wildlife movement.",
+      "impact_if_violated": "Expansion affects core forest. Project requires habitat restoration or offset mitigation.",
+      "mitigation_options": [
+        "Option A: Develop on-site habitat restoration plan (native plantings, invasive removal)",
+        "Option B: Fund off-site forest conservation easement or acquisition through HHLT",
+        "Option C: Reduce expansion scope to minimize forest loss (<1 acre)",
+        "Option D: Phased development with monitoring and contingency conservation"
+      ],
+      "approval_path": "Planning Director + Conservation Board joint approval. HHLT habitat assessment required.",
+      "override_required": false,
+      "override_authority": "Planning Director with documented mitigation plan"
+    },
+    {
+      "id": "EAGLE_HABITAT",
+      "name": "Bald Eagle Nesting & Foraging Habitat",
+      "category": "Protected Species",
+      "description": "Critical species protection within 2 miles of documented bald eagle sightings or nesting areas",
+      "trigger": "bald_eagle_sightings_miles < 2.0",
+      "severity": "CONSULT",
+      "regulation": "NYS DEC Wildlife Resources § 5.0 — Protected Species; Bald and Golden Eagle Protection Act",
+      "rationale": "Bald eagles are recovering in the Hudson Valley. Nesting territories and foraging areas near water are sensitive to disturbance. Federal protection applies.",
+      "impact_if_violated": "Expansion in bald eagle habitat zone. Project requires NYSDEC consultation and seasonal construction limits.",
+      "mitigation_options": [
+        "Option A: Obtain NYSDEC habitat assessment letter confirming no nesting impact",
+        "Option B: Implement seasonal construction limits (avoid nesting season: Jan-Jul)",
+        "Option C: Establish construction exclusion zones and noise limits within 1 mile",
+        "Option D: Propose compensatory habitat work (perch trees, nesting platform, shoreline restoration)"
+      ],
+      "approval_path": "NYSDEC written habitat clearance REQUIRED. Planning Director approval after DEC clearance.",
+      "override_required": true,
+      "override_authority": "NYSDEC + Planning Director"
+    },
+    {
+      "id": "HABITAT_CONNECTIVITY",
+      "name": "Habitat Connectivity Corridors",
+      "category": "Wildlife Corridors",
+      "description": "High-priority connectivity corridors identified in Green Corridors Plan must maintain wildlife movement and ecological function",
+      "trigger": "habitat_connectivity_priority == 'high'",
+      "severity": "REVIEW",
+      "regulation": "Green Corridors Plan § 6.0 — Corridor Integrity; Hudson Highlands biodiversity framework",
+      "rationale": "Wildlife corridors allow species movement, genetic diversity, and habitat access. High-priority zones are irreplaceable for landscape-scale conservation.",
+      "impact_if_violated": "Expansion in high-priority corridor. Project may degrade wildlife connectivity. Mitigation required.",
+      "mitigation_options": [
+        "Option A: Maintain minimum 60% site permeability (unfenced, passable habitat)",
+        "Option B: Implement phased construction to maintain corridor function during development",
+        "Option C: Design landscaping to support native species and safe passage",
+        "Option D: Establish conservation easement on remaining 40% of site"
+      ],
+      "approval_path": "HHLT consultation + Planning Director approval. May require Conservation Board review.",
+      "override_required": false,
+      "override_authority": "Planning Director with HHLT concurrence"
+    },
+    {
+      "id": "WETLAND_IMPACT",
+      "name": "Wetland Protection",
+      "category": "Wetlands & Water",
+      "description": "No expansion that impacts wetlands comprising >5% of site area. Wetlands are protected resources under state law.",
+      "trigger": "wetland_percent > 5",
+      "severity": "BLOCK",
+      "regulation": "NYS Environmental Conservation Law § 24-0701 — Freshwater Wetlands Protection Act; Article 24 Regulations",
+      "rationale": "Wetlands provide flood control, water filtration, carbon storage, and irreplaceable wildlife habitat. Once lost, they cannot be recreated.",
+      "impact_if_violated": "Site contains significant wetlands. Expansion BLOCKED unless completely redesigned to avoid wetland impact.",
+      "mitigation_options": [
+        "Option A: Redesign project footprint entirely to avoid all wetland areas (>5% threshold)",
+        "Option B: Pursue Article 24 permit from DEC (requires demonstrated public benefit and no feasible alternatives)",
+        "Option C: Abandon expansion; focus on non-wetland areas of parcel",
+        "Option D: Propose wetland restoration on adjacent land to offset any minor unavoidable loss"
+      ],
+      "approval_path": "DEC Article 24 permit (state-level) + Planning Board supermajority vote (6/7). HHLT environmental review.",
+      "override_required": true,
+      "override_authority": "New York State DEC + Planning Board supermajority"
+    }
+  ],
+  "decision_logic": {
+    "BLOCK": "Expansion cannot proceed. Rule violation is absolute unless override authority approves specific mitigation.",
+    "CONDITIONAL": "Expansion possible with documented mitigation plan. Planning Director can approve with conditions.",
+    "REVIEW": "Expansion requires consultation. May approve with modifications. Planning Director + external agency review.",
+    "CONSULT": "External agency (NYSDEC, USFWS) consultation required. Approval contingent on agency clearance."
+  },
+  "metadata": {
+    "jurisdiction": "Town of Philipstown, Putnam County, New York",
+    "source": "Hudson Highlands Green Corridors Plan (2022) + NYS Environmental Conservation Law + Federal Protected Species Act",
+    "last_updated": "2026-04-28",
+    "note": "These rules represent town values as encoded in the Green Corridors Plan. Rules are enforceable by Planning Board authority. All decisions logged and auditable."
+  }
+}

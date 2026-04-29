@@ -1,0 +1,84 @@
+{
+  "parcels": [
+    {
+      "id": "PH-001",
+      "address": "238 Main St, Cold Spring, NY",
+      "owner": "Cold Spring Coffee & Bistro",
+      "acres": 0.5,
+      "zoning": "Commercial Downtown",
+      "description": "Existing restaurant looking to expand seating area and kitchen",
+      "features": {
+        "in_riparian_zone": true,
+        "riparian_distance_ft": 45,
+        "riparian_feature": "Foundry Brook tributary",
+        "core_forest_acres": 0.3,
+        "core_forest_type": "Mixed hardwood canopy",
+        "wetland_percent": 15,
+        "wetland_type": "Riparian transition zone",
+        "bald_eagle_sightings_miles": 0.8,
+        "eagle_sightings_count": 3,
+        "eagle_last_sighting": "2026-03-15",
+        "habitat_connectivity_priority": "high",
+        "green_corridor_zone": "priority_1",
+        "green_corridor_name": "Foundry Brook — Hudson River Connector",
+        "spotted_salamander_habitat": true,
+        "american_eel_access": true
+      }
+    },
+    {
+      "id": "PH-002",
+      "address": "9475 Route 9, Philipstown, NY",
+      "owner": "Philipstown Hardware & Feed",
+      "acres": 1.2,
+      "zoning": "Mixed Commercial",
+      "description": "Hardware store seeking to add lumber yard and outdoor storage",
+      "features": {
+        "in_riparian_zone": false,
+        "riparian_distance_ft": 250,
+        "riparian_feature": "Tributary to Sprout Brook",
+        "core_forest_acres": 0.1,
+        "core_forest_type": "Deciduous fringe",
+        "wetland_percent": 2,
+        "wetland_type": "Minor seepage area",
+        "bald_eagle_sightings_miles": 2.1,
+        "eagle_sightings_count": 0,
+        "eagle_last_sighting": null,
+        "habitat_connectivity_priority": "medium",
+        "green_corridor_zone": "buffer",
+        "green_corridor_name": "Sprout Brook Secondary Corridor",
+        "spotted_salamander_habitat": false,
+        "american_eel_access": false
+      }
+    },
+    {
+      "id": "PH-003",
+      "address": "1520 Route 9D, Philipstown, NY",
+      "owner": "Hudson Valley Marketplace Retail",
+      "acres": 2.5,
+      "zoning": "Highway Commercial",
+      "description": "Retail plaza seeking to expand parking and add service bay",
+      "features": {
+        "in_riparian_zone": false,
+        "riparian_distance_ft": 800,
+        "riparian_feature": "Distant to all streams",
+        "core_forest_acres": 0.0,
+        "core_forest_type": "None (previously cleared)",
+        "wetland_percent": 0,
+        "wetland_type": "None identified",
+        "bald_eagle_sightings_miles": 3.5,
+        "eagle_sightings_count": 0,
+        "eagle_last_sighting": null,
+        "habitat_connectivity_priority": "low",
+        "green_corridor_zone": "none",
+        "green_corridor_name": "Outside priority areas",
+        "spotted_salamander_habitat": false,
+        "american_eel_access": false
+      }
+    }
+  ],
+  "metadata": {
+    "source": "Town of Philipstown Planning Board + Hudson Highlands Land Trust Green Corridors Plan (2022)",
+    "generated": "2026-04-28",
+    "note": "All data simplified for demo purposes. Real environmental assessments require full GIS analysis and field surveys."
+  }
+}

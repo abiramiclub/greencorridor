@@ -5,6 +5,8 @@ from pyproj import Transformer
 
 FALLBACK_COORDS = {
     "238 main st": {"lat": 41.4154, "lon": -73.9571, "display_address": "238 Main St, Cold Spring, NY"},
+    "9475 route 9": {"lat": 41.4231, "lon": -73.9312, "display_address": "9475 Route 9, Philipstown, NY"},
+    "1520 route 9d": {"lat": 41.4089, "lon": -73.9498, "display_address": "1520 Route 9D, Philipstown, NY"},
     "1 fahnestock state park rd": {"lat": 41.4544, "lon": -73.8287, "display_address": "1 Fahnestock State Park Rd, Carmel, NY"},
     "8 seminary hill rd": {"lat": 41.4198, "lon": -73.9445, "display_address": "8 Seminary Hill Rd, Cold Spring, NY"},
 }

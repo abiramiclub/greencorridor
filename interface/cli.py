@@ -11,8 +11,8 @@ from interface.map_renderer import make_map
 
 DEMO_ADDRESSES = [
     "238 Main St, Cold Spring, NY",
-    "1 Fahnestock State Park Rd, Carmel, NY",
-    "8 Seminary Hill Rd, Cold Spring, NY",
+    "9475 Route 9, Philipstown, NY",
+    "1520 Route 9D, Philipstown, NY",
 ]
 
 BORDER = "═" * 44
@@ -42,7 +42,7 @@ def _run_assess(address: str, quiet: bool = False) -> dict:
     lat, lon = geom["lat"], geom["lon"]
 
     cvi_result = score_parcel(lat, lon)
-    species_list = get_species(lat, lon)
+    species_list = get_species(lat, lon, parcel=cvi_result.get("parcel"))
 
     cvi = cvi_result["cvi"]
     color = _cvi_color(cvi)
